@@ -1,0 +1,42 @@
+﻿@model crousseau2_College_Strike.Models.Shift
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Shift Details</h2>
+
+<div>
+    <h4>Shift</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Assignment.AssignmentName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Assignment.AssignmentName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Member.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Member.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ShiftDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShiftDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

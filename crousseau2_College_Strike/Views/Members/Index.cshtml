@@ -1,0 +1,121 @@
+﻿@model PagedList.IPagedList<crousseau2_College_Strike.Models.Member>
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Members</h2>
+
+<p>
+    @Html.ActionLink("Create New Member", "Create")
+</p>
+
+<div>
+    @using (Html.BeginForm("Index", "Members", FormMethod.Get))
+    {
+        <p>
+            <div class="form-horizontal">
+                <button class="btn" type="button" data-toggle="collapse" id="filterToggle" data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+                    Filter/Search Members
+                </button>
+                <div class="collapse @(ViewBag.Filtering)" id="collapseFilter">
+                    <div class="well">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-5">Search Applicant Name: </label>
+                                    <div class="col-md-7">
+                                        @Html.TextBox("searchName", null, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-5">Search in Phone Number: </label>
+                                    <div class="col-md-7">
+                                        @Html.TextBox("searchPhone", null, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-5"></div>
+                                <div class="col-md-7">
+                                    <input type="submit" name="actionButton" value="Filter" class="btn btn-default" /> @Html.ActionLink("Clear", "Index")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+        </p>
+
+        <table class="table">
+            <tr>
+                <th>
+                    <input type="submit" name="actionButton" value="Assignment" class="btn btn-link" />
+                </th>
+                <th>
+                    <input type="submit" name="actionButton" value="Name" class="btn btn-link" />
+                </th>
+                <th>
+                    <input type="submit" disabled="disabled" value="Phone" class="btn btn-link" />
+                </th>
+                <th>
+                    <input type="submit" disabled="disabled" value="eMail" class="btn btn-link" />
+                </th>
+                <th>
+                    <input type="submit" disabled="disabled" value="Position" class="btn btn-link" />
+                </th>
+                <th></th>
+            </tr>
+            
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Assignment.AssignmentName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Phone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.eMail)
+        </td>
+                    <td>
+                @{
+                    foreach (var pos in item.Positions)
+                    {
+                        @:  @pos.PositionTitle <br />
+                    }
+                }
+            </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.id })
+        </td>
+    </tr>
+}
+            </table>
+            <span id="filterMessage" class="text-danger">@((Model.Count() == 0) ? "Zero applicants found.  No records match your criteria." : "")</span>
+                    <input type="hidden" name="sortDirection" value="@ViewBag.sortDirection" />
+                    <input type="hidden" name="sortField" value="@ViewBag.sortField" />
+                    <br />
+
+                    @:Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+
+                    @Html.PagedListPager(Model, page => Url.Action("Index",
+    new
+    {
+        page,
+        sortDirection = ViewBag.sortDirection,
+        sortField = ViewBag.sortField,
+        searchName = ViewBag.searchName,
+        searchPhone = ViewBag.searchPhone
+    }))
+}
+</div>
